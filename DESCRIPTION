@@ -1,0 +1,23 @@
+Package: fairdataone
+Title: Analysis for DataONE Assessment
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Jeanette", "Clark", role = "aut", email = "jeanetteclark@nceas.ucsb.edu", comment=c(ORCID = "0000-0003-4703-1974")),
+    person("Chris", "Beltz", role = "aut", email = "cwbeltz@nceas.ucsb.edu", comment=c(ORCID = "xxxx")), 
+    person("Peter", "Slaughter", role = "aut", email = "slaughter@nceas.ucsb.edu", comment=c(ORCID = "0000-0002-2192-403X")),
+    person("Ted", "Habermann", role = "aut", email = "", comment=c(ORCID = "xxxx")), 
+    person("Matthew B.", "Jones", role = c("aut", "cre"), email = "jones@nceas.ucsb.edu", comment=c(ORCID = "0000-0003-0077-4738"))
+    )
+Description: Generates analysis and figures for DataONE network metadata assessment.
+License: CC BY 4.0
+ByteCompile: true
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    bookdown,
+    here
+Suggests: 
+    devtools,
+    git2r
