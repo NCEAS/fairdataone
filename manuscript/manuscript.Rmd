@@ -71,6 +71,9 @@ lineno: false
 output: rticles::pnas_article
 ---
 
+```{r packages, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+library(fairdataone)
+```
 
 This PNAS journal template is provided to help you write your work in the
 correct journal format. Instructions for use are provided below.
@@ -115,6 +118,14 @@ Abstract, Significance Statement, Results, Discussion, Materials and
 methods, Acknowledgments, and References. Other orders and headings are
 permitted.
 
+Results {#results .unnumbered}
+-------
+
+```{r load_data, echo=FALSE, message=FALSE, results='hide'}
+fair_data <- fairdataone::load_data()
+names(fair_data)
+```
+
 Manuscript Length {#manuscript-length .unnumbered}
 -----------------
 
@@ -127,7 +138,7 @@ and/or equations in addition to text, keep the text for your manuscript
 under 39,000 characters (including spaces) for Direct Submissions and
 72,000 characters (including spaces) for PNAS PLUS.
 
-References {#references .unnumbered}
+References {#references_info .unnumbered}
 ----------
 
 References should be cited in numerical order as they appear in text;
