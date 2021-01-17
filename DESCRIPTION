@@ -9,7 +9,7 @@ Authors@R: c(
     person("Matthew B.", "Jones", role = c("aut", "cre"), email = "jones@nceas.ucsb.edu", comment=c(ORCID = "0000-0003-0077-4738"))
     )
 Description: Generates analysis and figures for DataONE network metadata assessment.
-License: CC BY 4.0
+License: Apache License (>= 2)
 ByteCompile: true
 Encoding: UTF-8
 LazyData: true
