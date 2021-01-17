@@ -31,11 +31,11 @@ Please cite this compendium as:
     figures and tables in this file)
   - [:file\_folder: data](/manuscript/data): Data used in the analysis.
     Most data are retrieved from a data archive, but small static data
-    files are also retrieved from this directory.
+    files may also be retrieved from this directory.
   - [:file\_folder: figures](/manuscript/figures): Plots and other
-    illustrations
+    illustrations.
 
-## How to run in your broswer or download and run locally
+## How to run run locally
 
 This research compendium has been developed using the statistical
 programming language R. To work with the compendium, you will need
@@ -43,13 +43,16 @@ installed on your computer the [R
 software](https://cloud.r-project.org/) itself and optionally [RStudio
 Desktop](https://rstudio.com/products/rstudio/download/).
 
-You can download the compendium as a zip from from this URL:
-[master.zip](/archive/master.zip). After unzipping: - open the `.Rproj`
-file in RStudio - run `devtools::install()` to ensure you have the
-packages this analysis depends on (also listed in the
-[DESCRIPTION](/DESCRIPTION) file). - finally, open
-`manuscript/manuscript.Rmd` and knit to produce the `manuscript.pdf`, or
-run `rmarkdown::render("manuscript/manusctipt.Rmd")` in the R console
+After downloading the compendium from GitHub:
+
+  - open the `.Rproj` file in RStudio
+  - run `devtools::install()` to ensure you have the packages this
+    analysis depends on (also listed in the [DESCRIPTION](/DESCRIPTION)
+    file). This also installs the `fairdataone` package, which is
+    necessary to Knit the manuscript.
+  - finally, open `manuscript/manuscript.Rmd` and knit to produce the
+    `manuscript.pdf`, or run
+    `rmarkdown::render("manuscript/manuscript.Rmd")` in the R console.
 
 ### Licenses
 
