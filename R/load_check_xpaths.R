@@ -73,7 +73,6 @@ parse_xpath <- function(check_name){
         trimws(.) %>%
         gsub("^\\(", "", .) %>%
         gsub("\\)$", "", .) %>%
-        gsub("^//", "/", .) %>%
         grep("[a-z].*", ., value = T)
 }
 
