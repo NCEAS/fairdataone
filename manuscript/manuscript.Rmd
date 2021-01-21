@@ -75,13 +75,68 @@ output: rticles::pnas_article
 library(fairdataone)
 ```
 
-This PNAS journal template is provided to help you write your work in the
-correct journal format. Instructions for use are provided below.
+The FAIR principles address four hierarchical aspects of research data which are
+worth defining explicitly.
 
-Note: please start your introduction without including the word
-"Introduction" as a section heading (except for math articles in the
-Physical Sciences section); this heading is implied in the first
-paragraphs.
+* Resource - something that can be accessed and described
+* Dataset - a type of resource, which consists of one or more data files that
+can be described collectively
+* Entity - an object within a dataset, typically represented by a file or a
+table within a file
+* Attribute - a characteristic of an entity, represented by the
+information contained within the entity. In the case of a table, attributes are
+the identifying or measured variables (columns, often) of the entity.
+
+For the purpose of this analysis, resource and dataset are essentially
+synonymous, although resource is a superset of dataset. In it's current
+implementation, the FAIR suite of metadata checks examine metadata for content
+relevant to datasets. Because it is possible to extend the FAIR metadata checks
+to other resource types (such as software), we use the more general term
+resource.
+
+It is also useful to map these concepts as we have defined them to the 3
+metadata dialects examined in this analysis. We reference ISO 19115-2,
+ISO 19115-1, EML 2.2.0, and DataCite 4.3.
+
+In all three dialects the resource is whatever the metadata is
+describing. The scope of what this resource could be varies slightly between
+dialects. Below is a list of the possibilities from all three dialects.
+
+* DataCite - audiovisual, collection, data paper, dataset, event, image,
+interactive resource, model, physical object, service, software, sound
+* ISO - attribute, attribute type, collection hardware, collection session,
+dataset, series, non-geographic dataset, dimension group, feature, feature type,
+property type, field session, software, service, model, tile
+* EML - dataset, citation, software, protocol
+
+Dataset has the following definitions in each of the dialects. Location refers
+to the XPATH in the dialect with the location of either a controlled list of options containing
+dataset (DataCite, ISO), or the dataset element itself (EML).
+
+| Dialect | Definition | Location |
+|------|------|------|
+| DataCite  |  Data encoded in a defined structure  | /resource/resourceType[resourceTypeGeneral] |
+| ISO  | Identifiable collection of data  | //MD_ScopeCode/ |
+| EML  |  A resource that describes a data set, which can include one or more data entities such as data tables |   /eml/dataset |
+
+The concept of an entity within a dataset varies among dialects. ISO can reference
+individual entities to some degree, although many entity-level fields (such as coverage and contentInfo) are ambiguous
+when the scope of the resource is dataset, and there are multiple entities to document. The 
+ISO 19115-1 specification shows how individual entities can be documented using an aggregate
+(eg: `DS_Aggregate/DS_Dataset/MD_Metadata`) and a scope code appropriate for the entity
+of interest to resolve ambiguity. In practice, this model seems to be seldom used. 
+Similarly, DataCite supports linking entity-level information as a resource with an appropriate
+type to a dataset resource using the `resource/relatedIdentifier` field, though again this model
+seems to not be used frequently. EML supports documenting multiple entities within the dataset resource in 
+`/eml/dataset/dataTable|spatialRaster|spatialVector|storedProcedure|view|otherEntity`.
+
+ISO supports attribute (measurement) level information through `MD_Metadata/contentInfo`, though
+this suffers from the same ambiguity as the entity information does in the case that there
+is more than one entity described by the dataset. EML supports attribute level information
+within each entity through `eml/dataset/*/attributeList`. DataCite does not support documentation
+to the atttribute level.
+
+
 
 Guide to using this template {.unnumbered}
 ========================================
@@ -204,12 +259,6 @@ footnotes, as mentioned in the [cuted package
 documentation](http://texdoc.net/pkg/cuted). In the case of problems
 with footnotes, it may be possible to correct the situation using
 commands `\footnotemark` and `\footnotetext`.
-
-$$\begin{aligned}
-(x+y)^3&=(x+y)(x+y)^2\\
-       &=(x+y)(x^2+2xy+y^2) \label{eqn:example} \\
-       &=x^3+3x^2y+3xy^3+x^3. 
-\end{aligned}$$
 
 
 
