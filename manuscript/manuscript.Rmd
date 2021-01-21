@@ -113,11 +113,9 @@ Dataset has the following definitions in each of the dialects. Location refers
 to the XPATH in the dialect with the location of either a controlled list of options containing
 dataset (DataCite, ISO), or the dataset element itself (EML).
 
-| Dialect | Definition | Location |
-|------|------|------|
-| DataCite  |  Data encoded in a defined structure  | /resource/resourceType[resourceTypeGeneral] |
-| ISO  | Identifiable collection of data  | //MD_ScopeCode/ |
-| EML  |  A resource that describes a data set, which can include one or more data entities such as data tables |   /eml/dataset |
+* DataCite: Data encoded in a defined structure, `/resource/resourceType[resourceTypeGeneral]`
+* ISO: Identifiable collection of data, `//MD_ScopeCode/`
+* EML: A resource that describes a data set, which can include one or more data entities such as data tables, `/eml/dataset`
 
 The concept of an entity within a dataset varies among dialects. ISO can reference
 individual entities to some degree, although many entity-level fields (such as coverage and contentInfo) are ambiguous
@@ -128,7 +126,7 @@ of interest to resolve ambiguity. In practice, this model seems to be seldom use
 Similarly, DataCite supports linking entity-level information as a resource with an appropriate
 type to a dataset resource using the `resource/relatedIdentifier` field, though again this model
 seems to not be used frequently. EML supports documenting multiple entities within the dataset resource in 
-`/eml/dataset/dataTable|spatialRaster|spatialVector|storedProcedure|view|otherEntity`.
+`/eml/dataset/dataTable | spatialRaster | spatialVector | storedProcedure | view | otherEntity`.
 
 ISO supports attribute (measurement) level information through `MD_Metadata/contentInfo`, though
 this suffers from the same ambiguity as the entity information does in the case that there
