@@ -21,5 +21,12 @@ listing their specific contributions in each area.
 
 
 
+Timeline
+ * Analysis and FAIR checks done by March 30
+ * Paper outline by March 30
+ * Paper submitted by June 30
+
+
+
 These documents will be archived along with the manuscript.
 
