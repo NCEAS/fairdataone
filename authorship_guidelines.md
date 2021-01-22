@@ -9,16 +9,17 @@ listing their specific contributions in each area.
 
 | Activity | Specific Contributions|
 |----------|-----------------------|
-| **Concieved of the idea for the MS** - e.g. framing the question or objectives| |
-| **Designed the MS** – help determine structure of the MS, the intellectual content and scope, etc.| |
-|**Supervised** – oversight and responsibility for the organization of the project and manuscript| |
-|**Performed research - Data collection **| |
-|**Performed research - Data analysis** | |
+| **Conceptualized and initalized the research project** |MBJ,TH |
+| **Conceived of the ideas in the MS** - e.g. framing the question or objectives|MBJ,  |
+| **Designed and wrote the MS text** – help determine structure of the MS, the intellectual content and scope, etc.|  |
+|**Supervised** – oversight and responsibility for the organization of the project and manuscript|MBJ, |
+|**Performed research - Data acquisition **|MBJ, PS, SJC |
+|**Performed research - Data analysis** |MBJ, PS, SJC, CWB |
+|**Designed and implemented software** |MBJ, PS |
 | **Contributed new methods**| |
 |**Drafted figures and tables**| |
 |**Performed critical reviews** – reworking the manuscript for intellectual context before submission, not just spelling and grammar checking, within three weeks of receiving the draft. | |
 |**Other** – other contributions not listed above, please specify.||
-
 
 
 Timeline
