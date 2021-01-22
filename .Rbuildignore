@@ -4,5 +4,6 @@
 ^README-.*\.png$
 ^CONDUCT\.md$
 ^CONTRIBUTING\.md$
-manuscript
+^manuscript
 ^LICENSE\.md$
+^authorship_guidelines.md
