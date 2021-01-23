@@ -2,4 +2,11 @@
 
 export(load_data)
 import(contentid)
+import(dplyr)
+import(purrr)
+import(tidyr)
 import(vroom)
+import(xml2)
+importFrom(rlang,.data)
+importFrom(utils,download.file)
+importFrom(utils,unzip)
