@@ -1,0 +1,264 @@
+---
+title: "DataONE FAIR Analysis"
+author: "Christopher Beltz"
+date: "1/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+#load libraries
+library("here")
+library("tidyverse")
+library("patchwork")
+```
+
+```{r}
+source(here::here("manuscript", "initial-analysis", "graphical_theme", "theme_modified_ADC.R"))
+```
+
+
+```{r}
+#set path on Aurora to Chris's drive(NOTE: data folder is not included in the GitHub repo and /data is in the gitignore)
+path <- "/home/cwbeltz/fairdataone/data/dataone-fair-0.3.1-scores_2020-12-18-.csv"
+
+DataONE_FAIR_data <- read.csv(path,
+                              stringsAsFactors = FALSE)
+```
+
+
+```{r}
+summary(DataONE_FAIR_data)
+
+DataONE_FAIR_data$formatId <- as.factor(DataONE_FAIR_data$formatId)
+DataONE_FAIR_data$dateUploaded <- as.POSIXct(DataONE_FAIR_data$dateUploaded, tz="America/Los_Angeles")
+DataONE_FAIR_data$datasource <- as.factor(DataONE_FAIR_data$datasource)
+
+DataONE_FAIR_data$display_name <- gsub("urn:node:","", DataONE_FAIR_data$datasource)
+```
+
+
+```{r}
+unique(DataONE_FAIR_data$datasource)
+
+certifiedRepo_coreTrustSeal <- c("urn:node:ARCTIC",
+                                 "urn:node:PANGAEA",
+                                 "urn:node:NCEI")
+  
+DataONE_FAIR_data$coreTrustSeal <- ifelse(DataONE_FAIR_data$datasource %in% certifiedRepo_coreTrustSeal, "certified", "no")
+```
+
+##########################################################################
+#### Overall Repository Mean and Standard Deviation with # of Records ####
+##########################################################################
+
+```{r}
+allTime_allRepo_summaryStats <- DataONE_FAIR_data %>% 
+  group_by(datasource, display_name, coreTrustSeal) %>% 
+  summarise(n = n(),
+            overall_mean = mean(scoreOverall),
+            overall_sd = sd(scoreOverall),
+            finadable_mean = mean(scoreFindable),
+            findable_sd = sd(scoreFindable),
+            accesible_mean = mean(scoreAccessible),
+            accessible_sd = sd(scoreAccessible),
+            interoperable_mean = mean(scoreInteroperable),
+            interoperable_sd = sd(scoreInteroperable),
+            reusable_mean = mean(scoreReusable),
+            reusable_sd = sd(scoreReusable)) %>% 
+  arrange(-n)
+```
+
+
+```{r}
+ggplot(data=allTime_allRepo_summaryStats, aes(x=reorder(display_name, overall_mean), y=overall_mean, color=coreTrustSeal)) +
+  geom_point(aes(size=n)) +
+  geom_errorbar(aes(ymin=overall_mean-overall_sd, ymax=overall_mean+overall_sd), width=.2,
+                 position=position_dodge(0.05)) +
+  ylim(0,1) +
+  ylab("Overall Score") +
+  xlab("Repository") +
+  theme_ADC_modified +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_color_manual(values=c("dodgerblue", "black"),
+                         name="",
+                         labels=c("Core Trust Seal", "uncertified"))
+```
+
+
+```{r, eval=FALSE}
+#save plot as PNG to Aurora
+ggsave(filename="Figure-01_2021-01-26_DataONE-FAIR_MeanScores.png",
+       path=here("manuscript", "figures"),
+       bg="transparent",
+       dpi = 300,
+       units="in",
+       width=9.5,
+       height=6)
+```
+
+
+
+##########################################################################
+#### Change over Time ####
+##########################################################################
+
+```{r}
+change_summary_stats <- DataONE_FAIR_data %>% 
+  pivot_longer(cols=c(scoreOverall, scoreFindable, scoreAccessible, scoreInteroperable, scoreReusable),
+               names_to="type",
+               values_to="score")
+
+change_summary_stats$dateFloor <- lubridate::floor_date(as.POSIXct(change_summary_stats$dateUploaded), unit = "month")
+
+change_summary_stats <- change_summary_stats %>% 
+  group_by(datasource, display_name) %>% 
+  mutate(n=n()) %>% 
+  ungroup() %>% 
+  group_by(datasource, dateFloor, type) %>% 
+  summarize(meanScore= mean(score),
+            n=mean(n/5))
+
+
+change_summary_stats$display_name <- gsub("urn:node:","", change_summary_stats$datasource)
+```
+
+
+```{r}
+change_summary_stats %>% 
+  filter(type=="scoreOverall") %>% 
+  ggplot(aes(x=dateFloor, y=meanScore, group=type)) +
+  geom_point() +
+  ylim(0,1) +
+  facet_wrap(~display_name) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+```{r}
+#remove the repositories that have minimal dispersion of records across time.
+#Note: some of these repos likely have packages that were batch uploaded with similar dateUploaded on the system metadata; actual upload date of the package to the individual repo may be very different.
+
+repos_to_keep <- c("ARCTIC",
+                   "EDI",
+                   "ESA",
+                   "ESS_DIVE",
+                   "FEMC",
+                   "GLEON",
+                   "GOA",
+                   "GRIIDC",
+                   "KNB",
+                   "LTER",
+                   "METAGRIL",
+                   "NCEI",
+                   "NRDC",
+                   "ONESHARE",
+                   "PISCO",
+                   "PPBIO",
+                   "RW",
+                   "SANPARKS",
+                   "TERN",
+                   "TRFI"
+)
+
+change_summary_stats <- change_summary_stats %>% 
+  filter(display_name %in% repos_to_keep)
+```
+
+
+```{r}
+change_summary_stats %>% 
+  filter(type=="scoreOverall") %>% 
+  ggplot(aes(x=dateFloor, y=meanScore, group=type)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  ylim(0,1) +
+  facet_wrap(~display_name) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+```{r}
+#calculate over time and plot the slope on a single graph
+datasource_change_over_time <- change_summary_stats %>% 
+  filter(dateFloor >= as.POSIXct("2000-04-01")) %>% 
+  group_by(datasource, display_name, type) %>% 
+  summarize(slope = coef(lm(meanScore ~ dateFloor))[2])
+
+datasource_change_over_time$coreTrustSeal <- ifelse(datasource_change_over_time$datasource %in% certifiedRepo_coreTrustSeal, "certified", "no")
+
+datasource_change_over_time$type <- fct_relevel(datasource_change_over_time$type, "scoreFindable", "scoreAccessible", "scoreInteroperable", "scoreReusable")
+```
+
+
+```{r}
+plot2a <- ggplot(datasource_change_over_time[datasource_change_over_time$type=="scoreOverall",], aes(x=reorder(display_name, slope), y=slope, color=coreTrustSeal)) +
+  geom_point() +
+  geom_hline(yintercept=0) +
+  ylab("Slope") +
+  xlab("Repository") +
+  theme_ADC_modified +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_color_manual(values=c("dodgerblue", "black"),
+                         name="",
+                         labels=c("Core Trust Seal", "uncertified"))
+
+plot2a
+```
+
+
+```{r}
+plot2b <- ggplot(datasource_change_over_time[datasource_change_over_time$type!="scoreOverall",], aes(x=reorder(display_name, slope), y=slope, color=coreTrustSeal)) +
+  geom_point() +
+  geom_hline(yintercept=0) +
+  ylab("Slope") +
+  xlab("Repository") +
+  facet_wrap(~type) +
+  theme_ADC_modified +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text.y = element_text(size = 10),
+        axis.title.y = element_blank()) +
+  scale_color_manual(values=c("dodgerblue", "black"),
+                         name="",
+                         labels=c("Core Trust Seal", "uncertified")) +
+  theme(legend.position = "none")
+
+plot2b
+```
+
+
+```{r}
+layout_plot2 <- "
+  AAAA
+  AAAA
+  BBBB
+  BBBB
+"
+```
+
+
+```{r}
+#create final plot
+plot2 <- plot2a + plot2b + plot_layout(design = layout_plot2)
+
+plot2
+```
+
+
+```{r, eval=FALSE}
+#save plot as PNG to Aurora
+ggsave(filename="Figure-02_2021-01-26_DataONE-FAIR_ScoresOverTime-All.png",
+       path=here("manuscript", "figures"),
+       bg="transparent",
+       dpi = 300,
+       units="in",
+       width=9.5,
+       height=6)
+```
+
