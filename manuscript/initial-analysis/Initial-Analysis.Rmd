@@ -11,21 +11,30 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
+#install fairdataone R package
+devtools::install()
+```
+
+
+```{r}
 #load libraries
-library("here")
-library("rprojroot")
 library("contentid")
-library("vroom")
-library("tidyverse")
+library("fairdataone")
 library("patchwork")
+library("tidyverse")
 ```
 
-```{r}
-devtools::load_all(here::here("R"), reset=TRUE)
-```
 
 ```{r}
-DataONE_FAIR_data <- load_data()
+#load graphical parameters
+#fairdataone::standardize_colors_shapes()
+#theme_ADC_modified <- fairdataone::load_graphical_theme()
+```
+
+
+
+```{r}
+DataONE_FAIR_data <- fairdataone::load_data()
 ```
 
 
