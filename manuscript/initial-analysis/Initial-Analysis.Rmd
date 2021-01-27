@@ -20,7 +20,8 @@ library("patchwork")
 ```
 
 ```{r}
-source(here::here("manuscript", "initial-analysis", "graphical_theme", "theme_modified_ADC.R"))
+source(here::here("R", "standardize_theme_modified_ADC.R"))
+source(here::here("R", "standardize_colors_shapes.R"))
 ```
 
 
