@@ -1,13 +1,17 @@
-#' Load graphical theme for plotting using ggplot2
-#
-#  This theme is a modified version of the the Arctic Data Center's "theme_ADC" housed at:
-#  https://github.nceas.ucsb.edu/KNB/arctic-data/blob/master/reporting/R/theme_ADC.R
-#
-#'  @import ggplot2
+# Load modified ADC theme for ggplot2
 
-library(ggplot2)
 
+#' Load modified ADC theme for ggplot2
+#'
+#' @return theme for ggplot
+#' @import ggplot2
+#' @export
+#'
+#' @examples
+#' theme_ADC_modified <- load_graphical_theme()
 load_graphical_theme <- function() {
+
+  library(ggplot2)
 
   theme_ADC_modified <-
     theme_bw(base_size = 12, base_family = "Helvetica") +

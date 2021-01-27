@@ -26,9 +26,9 @@ library("tidyverse")
 
 
 ```{r}
-#load graphical parameters
-#fairdataone::standardize_colors_shapes()
-#theme_ADC_modified <- fairdataone::load_graphical_theme()
+#load graphical parameters 
+#fairdataone::standardize_colors_shapes() #(currently doesn't function)
+theme_ADC_modified <- fairdataone::load_graphical_theme()
 ```
 
 
