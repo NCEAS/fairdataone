@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 #load libraries
 library("here")
+library("rprojroot")
 library("contentid")
 library("vroom")
 library("tidyverse")
@@ -20,17 +21,13 @@ library("patchwork")
 ```
 
 ```{r}
-source(here::here("R", "standardize_theme_modified_ADC.R"))
-source(here::here("R", "standardize_colors_shapes.R"))
+devtools::load_all(here::here("R"), reset=TRUE)
 ```
-
 
 ```{r}
-#load data directly from KNB
-fair_data_hash <- "hash://sha256/77eaa2aa2037f2bd43ad5185d204ad12fba68f315a46c4b0d59bb303512288a5"
-fair_data_file <- contentid::resolve(fair_data_hash, store=TRUE)
-DataONE_FAIR_data <- vroom::vroom(fair_data_file)
+DataONE_FAIR_data <- load_data()
 ```
+
 
 
 ```{r}
