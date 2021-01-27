@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 #load libraries
 library("here")
+library("contentid")
+library("vroom")
 library("tidyverse")
 library("patchwork")
 ```
@@ -23,11 +25,10 @@ source(here::here("manuscript", "initial-analysis", "graphical_theme", "theme_mo
 
 
 ```{r}
-#set path on Aurora to Chris's drive(NOTE: data folder is not included in the GitHub repo and /data is in the gitignore)
-path <- "/home/cwbeltz/fairdataone/data/dataone-fair-0.3.1-scores_2020-12-18-.csv"
-
-DataONE_FAIR_data <- read.csv(path,
-                              stringsAsFactors = FALSE)
+#load data directly from KNB
+fair_data_hash <- "hash://sha256/77eaa2aa2037f2bd43ad5185d204ad12fba68f315a46c4b0d59bb303512288a5"
+fair_data_file <- contentid::resolve(fair_data_hash, store=TRUE)
+DataONE_FAIR_data <- vroom::vroom(fair_data_file)
 ```
 
 
@@ -80,7 +81,7 @@ ggplot(data=allTime_allRepo_summaryStats, aes(x=reorder(display_name, overall_me
   geom_errorbar(aes(ymin=overall_mean-overall_sd, ymax=overall_mean+overall_sd), width=.2,
                  position=position_dodge(0.05)) +
   ylim(0,1) +
-  ylab("Overall Score") +
+  ylab("Mean Overall Score") +
   xlab("Repository") +
   theme_ADC_modified +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
