@@ -20,6 +20,7 @@ devtools::install()
 #load libraries
 library("contentid")
 library("fairdataone")
+library("flowers")
 library("patchwork")
 library("tidyverse")
 ```
@@ -107,6 +108,89 @@ ggsave(filename="Figure-01_2021-01-26_DataONE-FAIR_MeanScores.png",
        units="in",
        width=9.5,
        height=6)
+```
+
+
+
+##########################################################################
+#### Flower Plot for Each Repo ####
+##########################################################################
+
+```{r}
+#example from mbjones/flowers
+df <- data.frame(order = c(1, 4, 3, 2),
+                        score = c(90, 80, 70, 60),
+                        weight = c(1, 1, 1, 1),
+                        goal = c("F", "A", "I", "R"),
+                        label = c("Findable", "Accessible", "Interoperable", "Reusable"),
+                        category = c(NA, NA, NA, NA),
+                        stringsAsFactors = FALSE) %>% arrange(order)
+
+d1_colors <- c( "#c70a61", "#ff582d", "#1a6379", "#60c5e4")
+plot_flower(df, title = "FAIR Metrics", fixed_colors=TRUE, colors = d1_colors)
+```
+
+
+```{r}
+allTime_allRepo_forFlowers <- DataONE_FAIR_data %>% 
+  group_by(datasource, display_name, coreTrustSeal) %>% 
+  summarise(Findable = mean(scoreFindable),
+            Accessible = mean(scoreAccessible),
+            Interoperable = mean(scoreInteroperable),
+            Reusable = mean(scoreReusable))
+
+allTime_allRepo_forFlowers <- allTime_allRepo_forFlowers %>% 
+  pivot_longer(cols = c(Findable, Accessible, Interoperable, Reusable),
+               names_to = "label",
+               values_to = "score")
+
+allTime_allRepo_forFlowers$weight <- 1
+allTime_allRepo_forFlowers$category <- NA
+
+allTime_allRepo_forFlowers$order <- ifelse(allTime_allRepo_forFlowers$label=="Findable", 1,
+                                           ifelse(allTime_allRepo_forFlowers$label=="Accessible", 2,
+                                                  ifelse(allTime_allRepo_forFlowers$label=="Interoperable", 3,
+                                                         ifelse(allTime_allRepo_forFlowers$label=="Reusable", 4, NA)
+                                                  )
+                                           )
+)
+
+allTime_allRepo_forFlowers$goal <- ifelse(allTime_allRepo_forFlowers$label=="Findable", "F",
+                                           ifelse(allTime_allRepo_forFlowers$label=="Accessible", "A",
+                                                  ifelse(allTime_allRepo_forFlowers$label=="Interoperable", "I",
+                                                         ifelse(allTime_allRepo_forFlowers$label=="Reusable", "R", NA)
+                                                  )
+                                           )
+)
+```
+
+
+```{r}
+allTime_allRepo_forFlowers$score <- allTime_allRepo_forFlowers$score*100
+```
+
+
+
+```{r}
+d1_colors <- c( "#c70a61", "#ff582d", "#1a6379", "#60c5e4")
+
+length(unique(allTime_allRepo_forFlowers$display_name))
+loop.vector <- 1:length(unique(allTime_allRepo_forFlowers$display_name))
+
+par(mfrow=c(4,9))
+
+
+for (i in loop.vector) { # Loop over loop.vector
+
+  # store data in column.i as x
+  x <- allTime_allRepo_forFlowers[allTime_allRepo_forFlowers$display_name==unique(allTime_allRepo_forFlowers$display_name)[i],]
+  
+  # Plot histogram of x
+plot_flower(x, 
+            title = unique(allTime_allRepo_forFlowers$display_name)[i],
+            fixed_colors=TRUE,
+            colors = d1_colors)
+}
 ```
 
 
@@ -269,4 +353,57 @@ ggsave(filename="Figure-02_2021-01-26_DataONE-FAIR_ScoresOverTime-All.png",
        width=9.5,
        height=6)
 ```
+
+
+
+##########################################################################
+#### Initial vs Final with Running Mean ####
+##########################################################################
+
+```{r}
+#remove checks and docs that are missing a 'sequenceId'
+FAIR_data_seqPos <- DataONE_FAIR_data[-which(is.na(DataONE_FAIR_data$sequenceId)),]
+```
+
+
+```{r}
+#examine series_ids that do not have 2 unique PIDs
+examine_unique_pids <- FAIR_data_seqPos %>%
+  arrange(sequenceId, dateUploaded) %>%
+  group_by(sequenceId) %>%
+  summarise(unique_pids= length(unique(pid)),
+            n=n())
+
+#number of datasets removed for having only one unique pid within the sequenceId
+sum(examine_unique_pids$unique_pids[examine_unique_pids$unique_pids==1])
+
+#create vector for sequenceIds with only 1 unique pid
+remove_sequenceId <- examine_unique_pids$sequenceId[examine_unique_pids$unique_pids==1]
+
+#remove series_id with only 1 unique pid
+FAIR_data_seqPos_pidUnique <- FAIR_data_seqPos[-which(FAIR_data_seqPos$sequenceId %in% remove_sequenceId),]
+
+```
+
+
+
+```{r}
+testdf <- DataONE_FAIR_data %>% 
+  
+```
+
+```{r}
+aggChecks_firstLast_dateSplit <- aggChecks_firstLast %>%
+  arrange(sequenceId, dateUploaded, pid) %>%
+  group_by(sequenceId) %>%
+  mutate(dateSplit = case_when(
+    dateUploaded < lead(dateUploaded, n=1) ~ "INITIAL",
+    dateUploaded > lag(dateUploaded, n=1) ~ "FINAL",
+    TRUE ~ "TBD"))
+```
+
+
+
+
+
 
