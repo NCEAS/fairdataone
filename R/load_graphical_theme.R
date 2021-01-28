@@ -3,6 +3,7 @@
 
 #' Load modified ADC theme for ggplot2
 #'
+#' @title load_graphical_theme
 #' @return theme for ggplot
 #' @import ggplot2
 #' @export
@@ -10,8 +11,6 @@
 #' @examples
 #' theme_ADC_modified <- load_graphical_theme()
 load_graphical_theme <- function() {
-
-  library(ggplot2)
 
   theme_ADC_modified <-
     theme_bw(base_size = 12, base_family = "Helvetica") +

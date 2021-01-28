@@ -2,7 +2,7 @@
 % Please edit documentation in R/load_graphical_theme.R
 \name{load_graphical_theme}
 \alias{load_graphical_theme}
-\title{Load modified ADC theme for ggplot2}
+\title{load_graphical_theme}
 \usage{
 load_graphical_theme()
 }
