@@ -29,15 +29,15 @@ load_graphical_theme <- function() {
       axis.text.x = element_text(
         color = "#1D244F"
       ),
-      axis.text.y = element_text(size = 18, color = "#1D244F"),
+      axis.text.y = element_text(size = 14, color = "#1D244F"),
       axis.title.x = element_text(
         color = "#1D244F",
-        size = 20
+        size = 16
       ),
       axis.title.y = element_text(
         color = "#1D244F",
         angle = 90,
-        size = 20
+        size = 16
       ),
       panel.background = element_rect(fill = "white"),
       axis.line = element_line(color = "#1D244F"),

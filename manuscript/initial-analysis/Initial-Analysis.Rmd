@@ -22,6 +22,7 @@ library("contentid")
 library("fairdataone")
 library("flowers")
 library("patchwork")
+library("scales")
 library("tidyverse")
 ```
 
@@ -84,25 +85,67 @@ allTime_allRepo_summaryStats <- DataONE_FAIR_data %>%
 
 
 ```{r}
-ggplot(data=allTime_allRepo_summaryStats, aes(x=reorder(display_name, overall_mean), y=overall_mean, color=coreTrustSeal)) +
-  geom_point(aes(size=n)) +
+plot1a <- ggplot(data=allTime_allRepo_summaryStats, aes(x=reorder(display_name, overall_mean), y=overall_mean, color=coreTrustSeal)) +
+  geom_point() +
   geom_errorbar(aes(ymin=overall_mean-overall_sd, ymax=overall_mean+overall_sd), width=.2,
                  position=position_dodge(0.05)) +
   ylim(0,1) +
   ylab("Mean Overall Score") +
   xlab("Repository") +
   theme_ADC_modified +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank()) +
+  theme(legend.position = c(0.3,0.9)) +
   scale_color_manual(values=c("dodgerblue", "black"),
                          name="",
                          labels=c("Core Trust Seal", "uncertified"))
+
+plot1a
 ```
+
+
+```{r}
+plot1b <- ggplot(data=allTime_allRepo_summaryStats, aes(x=reorder(display_name, overall_mean), y=n, fill=coreTrustSeal)) +
+  geom_col() +
+  ylab("Metadata (#)") +
+  xlab("Repository") +
+  theme_ADC_modified +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title.x = element_blank()) +
+  scale_fill_manual(values=c("dodgerblue", "black"),
+                    name="",
+                    labels=c("Core Trust Seal", "uncertified")) +
+  theme(legend.position = "none") +
+  scale_y_continuous(labels = comma)
+
+plot1b
+```
+
+
+```{r}
+layout_plot1 <- "
+  AAAA
+  AAAA
+  AAAA
+  BBBB
+  BBBB
+"
+```
+
+
+```{r}
+#create final plot
+plot1 <- plot1a + plot1b + plot_layout(design = layout_plot1)
+
+plot1
+```
+
 
 
 ```{r, eval=FALSE}
 #save plot as PNG to Aurora
-ggsave(filename="Figure-01_2021-01-26_DataONE-FAIR_MeanScores.png",
-       path=here("manuscript", "figures"),
+ggsave(filename="Figure-01_2021-01-28_DataONE-FAIR_MeanScores.png",
+       path=here::here("manuscript", "figures"),
        bg="transparent",
        dpi = 300,
        units="in",
@@ -382,24 +425,17 @@ remove_sequenceId <- examine_unique_pids$sequenceId[examine_unique_pids$unique_p
 
 #remove series_id with only 1 unique pid
 FAIR_data_seqPos_pidUnique <- FAIR_data_seqPos[-which(FAIR_data_seqPos$sequenceId %in% remove_sequenceId),]
-
 ```
 
 
-
 ```{r}
-testdf <- DataONE_FAIR_data %>% 
-  
-```
-
-```{r}
-aggChecks_firstLast_dateSplit <- aggChecks_firstLast %>%
-  arrange(sequenceId, dateUploaded, pid) %>%
-  group_by(sequenceId) %>%
-  mutate(dateSplit = case_when(
-    dateUploaded < lead(dateUploaded, n=1) ~ "INITIAL",
-    dateUploaded > lag(dateUploaded, n=1) ~ "FINAL",
-    TRUE ~ "TBD"))
+# aggChecks_firstLast_dateSplit <- aggChecks_firstLast %>%
+#   arrange(sequenceId, dateUploaded, pid) %>%
+#   group_by(sequenceId) %>%
+#   mutate(dateSplit = case_when(
+#     dateUploaded < lead(dateUploaded, n=1) ~ "INITIAL",
+#     dateUploaded > lag(dateUploaded, n=1) ~ "FINAL",
+#     TRUE ~ "TBD"))
 ```
 
 
