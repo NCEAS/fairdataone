@@ -62,6 +62,20 @@ certifiedRepo_coreTrustSeal <- c("urn:node:ARCTIC",
 DataONE_FAIR_data$coreTrustSeal <- ifelse(DataONE_FAIR_data$datasource %in% certifiedRepo_coreTrustSeal, "certified", "no")
 ```
 
+
+```{r}
+#remove test nodes
+test_nodes_remove <- c("urn:node:mnTestNKN",
+                       "urn:node:ONEShare_test",
+                       "urn:node:mnTestBCODMO")
+
+DataONE_FAIR_data <- DataONE_FAIR_data %>% 
+  filter(!datasource %in% test_nodes_remove)
+```
+
+
+
+
 ##########################################################################
 #### Overall Repository Mean and Standard Deviation with # of Records ####
 ##########################################################################
@@ -138,19 +152,6 @@ layout_plot1 <- "
 plot1 <- plot1a + plot1b + plot_layout(design = layout_plot1)
 
 plot1
-```
-
-
-
-```{r, eval=FALSE}
-#save plot as PNG to Aurora
-ggsave(filename="Figure-01_2021-01-28_DataONE-FAIR_MeanScores.png",
-       path=here::here("manuscript", "figures"),
-       bg="transparent",
-       dpi = 300,
-       units="in",
-       width=9.5,
-       height=6)
 ```
 
 
@@ -383,18 +384,6 @@ layout_plot2 <- "
 plot2 <- plot2a + plot2b + plot_layout(design = layout_plot2)
 
 plot2
-```
-
-
-```{r, eval=FALSE}
-#save plot as PNG to Aurora
-ggsave(filename="Figure-02_2021-01-26_DataONE-FAIR_ScoresOverTime-All.png",
-       path=here("manuscript", "figures"),
-       bg="transparent",
-       dpi = 300,
-       units="in",
-       width=9.5,
-       height=6)
 ```
 
 
