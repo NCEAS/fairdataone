@@ -4,8 +4,7 @@ The group has drafted a list of responsibilities for manuscript co-authors. The 
 
 We highlight one view on this distinction below from Weltzin et al. 2006: *Drawing the line between acknowledgements and co-authorship can be challenging and one way of thinking about the differences may be to consider whether or not the participant is responsible and accountable for the article. A contributor receiving credit for the article should be willing to be held accountable for its contents and not be just responsible for a portion of work involved. In contrast, an acknowledgement may contribute formal or informal ideas to ongoing projects, collect enormous amounts of data, and develop and/or conduct statistical analyses, but may not be accountable for the final contents of all or even portions of the final manuscript.*
 
-We ask that you consider the following table with the description of contributions for each activity. Prior to manuscript submission, each contributor will be asked to fill out the table
-listing their specific contributions in each area.
+We ask that you consider the following table with the description of contributions for each activity. During the writing process, this table will be kept updated with contributions. Prior to manuscript submission, each contributor will be asked to review the table listing their specific contributions in each area.
 
 | Activity | Specific Contributions|
 |----------|-----------------------|
@@ -13,10 +12,10 @@ listing their specific contributions in each area.
 | **Conceived of the ideas in the MS** - e.g. framing the question or objectives|MBJ,  |
 | **Designed and wrote the MS text** – help determine structure of the MS, the intellectual content and scope, etc.|  |
 |**Supervised** – oversight and responsibility for the organization of the project and manuscript|MBJ, |
-|**Performed research - Data acquisition **|MBJ, PS, SJC |
+|**Performed research - Data acquisition**|MBJ, PS, SJC |
 |**Performed research - Data analysis** |MBJ, PS, SJC, CWB |
 |**Designed and implemented software** |MBJ, PS |
-| **Contributed new methods**| |
+|**Contributed new methods**| |
 |**Drafted figures and tables**| |
 |**Performed critical reviews** – reworking the manuscript for intellectual context before submission, not just spelling and grammar checking, within three weeks of receiving the draft. | |
 |**Other** – other contributions not listed above, please specify.||
