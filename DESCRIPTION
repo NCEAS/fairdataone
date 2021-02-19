@@ -18,9 +18,11 @@ RoxygenNote: 7.1.1
 Imports: 
     bookdown,
     contentid,
+    dataone,
     dplyr,
     ggplot2,
     here,
+    jsonlite,
     patchwork,
     purrr,
     rlang,
