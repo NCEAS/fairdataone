@@ -44,7 +44,7 @@ get_mn_dialects <- function(){
     t_join <- dplyr::inner_join(t_long, dialect_map, by = "formatIds") %>%
         dplyr::group_by(.data$mn, .data$dialect) %>%
         dplyr::summarise(n = sum(.data$counts), .groups = "drop") %>%
-        tidyr::pivot_wider(names_from = .data$dialect, values_from = .data$n)
+        tidyr::pivot_wider(names_from = .data$dialect, values_from = .data$n, values_fill = 0)
 
 
     d <- jsonlite::fromJSON("https://cn.dataone.org/cn/v2/query/solr/?q=formatType:METADATA&stats=true&stats.field={!tag=piv1%20min=true%20max=true}dateUploaded&facet=true&facet.pivot={!stats=piv1}authoritativeMN&fl=dateUploaded,authoritativeMN&wt=json")
@@ -54,8 +54,8 @@ get_mn_dialects <- function(){
                       max_date = as.Date(d$facet_counts$facet_pivot$authoritativeMN$stats$stats_fields$dateUploaded$max))
 
     t_final <- dplyr::full_join(t_join, d_f, by = "mn")  %>%
-        dplyr::select(.data$mn, .data$EML, .data$ISO, .data$DublinCore, .data$FGDC, .data$Dryad, .data$Mercury, .data$min_date, .data$max_date) %>%
-        dplyr::arrange(-.data$EML, -.data$ISO, -.data$DublinCore, -.data$FGDC, -.data$Dryad, -.data$Mercury, desc(.data$max_date)) %>%
+        dplyr::select(.data$mn, .data$EML, .data$ISO, .data$DublinCore, .data$FGDC, .data$Dryad, .data$min_date, .data$max_date) %>%
+        dplyr::arrange(-.data$EML, -.data$ISO, -.data$DublinCore, -.data$FGDC, -.data$Dryad, desc(.data$max_date)) %>%
         dplyr::mutate(active = ifelse(.data$max_date > as.Date("2021-01-01"), TRUE, FALSE))
 
     return(t_final)
