@@ -38,7 +38,7 @@ get_mn_dialects <- function(){
                                  "FGDC-STD-001.1-1999", "FGDC",
                                  "http://www.isotc211.org/2005/gmd", "ISO",
                                  "FGDC-STD-001.2-1999", "FGDC",
-                                 "http://purl.org/ornl/schema/mercury/terms/v1.0",  "Mercury",
+                                 "http://purl.org/ornl/schema/mercury/terms/v1.0",  "FGDC",
                                  "http://www.openarchives.org/OAI/2.0/oai_dc/", "DublinCore")
 
     t_join <- dplyr::inner_join(t_long, dialect_map, by = "formatIds") %>%
