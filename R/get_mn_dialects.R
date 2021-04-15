@@ -56,7 +56,8 @@ get_mn_dialects <- function(){
     t_final <- dplyr::full_join(t_join, d_f, by = "mn")  %>%
         dplyr::select(.data$mn, .data$EML, .data$ISO, .data$DublinCore, .data$FGDC, .data$Dryad, .data$min_date, .data$max_date) %>%
         dplyr::arrange(-.data$EML, -.data$ISO, -.data$DublinCore, -.data$FGDC, -.data$Dryad, desc(.data$max_date)) %>%
-        dplyr::mutate(active = ifelse(.data$max_date > as.Date("2021-01-01"), TRUE, FALSE))
+        dplyr::mutate(active = ifelse(.data$max_date > as.Date("2021-01-01"), TRUE, FALSE)) %>%
+        dplyr::filter(!grepl("test", tolower(.data$mn)))
 
     return(t_final)
 
